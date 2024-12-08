@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   # Hadoop Namenode
   namenode:
@@ -9,9 +9,8 @@ services:
       - 8020:8020
     volumes:
       - hadoop_namenode:/hadoop/dfs/name
+      - ./data/data_1m:/datasets
     environment:
-      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
-      - HDFS_CONF_dfs_replication=1
       - CLUSTER_NAME=bigdata_cluster
     env_file:
       - ./hadoop/hadoop.env
@@ -26,14 +25,12 @@ services:
       - namenode
     volumes:
       - hadoop_datanode:/hadoop/dfs/data
-    environment:
-      - CORE_CONF_fs_defaultFS=hdfs://namenode:8020
-      - HDFS_CONF_dfs_replication=1
     env_file:
       - ./hadoop/hadoop.env
     networks:
       - bigdata_network
 
+  #zookeeper
   zookeeper:
     image: bitnami/zookeeper:latest
     container_name: zookeeper
@@ -45,6 +42,7 @@ services:
     networks:
       - bigdata_network
 
+  # kafka
   kafka:
     image: bitnami/kafka:latest
     ports:
@@ -63,9 +61,12 @@ services:
     networks:
       - bigdata_network
 
-
+  #spark-master
   spark-master:
     image: bitnami/spark
+    build: 
+      context: .
+      dockerfile: ./spark/Dockerfile
     container_name: spark-master
     environment:
       - SPARK_MODE=master
@@ -74,15 +75,24 @@ services:
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
+      - SPARK_MASTER_HOST=spark-master
+      - SPARK_MASTER_PORT=7077
+      - SPARK_SUBMIT_OPTIONS=--packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0
     ports:
-      - '8080:8080'
-      - '7077:7077'
+      - "8080:8080"
+      - "7077:7077"
+    volumes:
+      - ./spark/code:/opt/spark/work-dir
     networks:
       - bigdata_network
 
-  spark-worker:
+  #spark-worker
+  spark-worker-1:
     image: bitnami/spark
-    container_name: spark-worker
+    build: 
+      context: .
+      dockerfile: ./spark/Dockerfile
+    container_name: spark-worker-1
     environment:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
@@ -93,14 +103,62 @@ services:
       - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
       - SPARK_SSL_ENABLED=no
       - SPARK_USER=spark
+      - SPARK_SUBMIT_OPTIONS=--packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0
     depends_on:
       - spark-master
+    volumes:
+      - ./spark/code:/opt/spark/work-dir
     networks:
       - bigdata_network
+
+  spark-worker-2:
+    image: bitnami/spark
+    build: 
+      context: .
+      dockerfile: ./spark/Dockerfile
+    container_name: spark-worker-2
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      - SPARK_USER=spark
+      - SPARK_SUBMIT_OPTIONS=--packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0
+    depends_on:
+      - spark-master
+    volumes:
+      - ./spark/code:/opt/spark/work-dir
+    networks:
+      - bigdata_network
+  
+  # cassandra
+  cassandra:
+    image: 'bitnami/cassandra:latest'
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+    environment:
+      - CASSANDRA_CLUSTER_NAME=bigdata_cluster
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      - CASSANDRA_USER=cassandra
+      - CASSANDRA_PASSWORD=cassandra
+      - CASSANDRA_INIT_SCRIPT=/docker-entrypoint-initdb.d/init.cql
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+      - ./cassandra/init.cql:/docker-entrypoint-initdb.d/init.cql
+    networks:
+      - bigdata_network
+
 
 volumes:
   hadoop_namenode:
   hadoop_datanode:
+  cassandra_data:
 
 networks:
   bigdata_network:
