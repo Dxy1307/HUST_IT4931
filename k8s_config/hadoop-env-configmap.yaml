@@ -5,5 +5,5 @@ data:
 kind: ConfigMap
 metadata:
   labels:
-    io.kompose.service: datanode-hadoop-env
+    app: datanode-hadoop-env
   name: hadoop-env

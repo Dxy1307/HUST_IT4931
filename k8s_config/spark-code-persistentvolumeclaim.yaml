@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    io.kompose.service: spark-code
+    app: spark-code
   name: spark-code
 spec:
   accessModes:

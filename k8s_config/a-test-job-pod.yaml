@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: spark-pod
+spec:
+  containers:
+    - name: spark-container
+      image: tung103664/spark-job-test1 
+      ports:
+        - containerPort: 808    # Mở port nếu cần
+

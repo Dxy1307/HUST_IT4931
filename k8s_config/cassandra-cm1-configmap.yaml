@@ -6,5 +6,5 @@ metadata:
   annotations:
     use-subpath: "true"
   labels:
-    io.kompose.service: cassandra
+   app: cassandra
   name: cassandra-cm1

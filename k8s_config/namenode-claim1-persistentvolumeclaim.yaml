@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   labels:
-    io.kompose.service: namenode-claim1
+    app: namenode-claim1
   name: namenode-claim1
 spec:
   accessModes:
