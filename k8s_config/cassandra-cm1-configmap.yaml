@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  init.cql: "DROP KEYSPACE IF EXISTS bigdata;\n\nCREATE KEYSPACE bigdata WITH REPLICATION = {\n  'class': 'SimpleStrategy', \n  'replication_factor': 1\n};\n\nUSE bigdata;\n\nCREATE TABLE product_events_and_purchase_conversion(\n  \"product_id\" bigint PRIMARY KEY, \n  \"view\" bigint, \n  \"cart\" bigint, \n  \"purchase\" bigint, \n  \"total_events\" bigint, \n  \"purchase_conversion\" double\n);\n\nCREATE TABLE user_purchase_gap(\n  \"user_id\" bigint PRIMARY KEY, \n  \"avg_diff_time\" text, \n  \"number_of_purchases\" bigint, \n  \"last_purchase_date\" timestamp\n);\n\nCREATE TABLE customer_rfm(\n  \"user_id\" bigint PRIMARY KEY, \n  \"recency\" bigint, \n  \"frequency\" bigint, \n  \"monetary\" bigint, \n  \"customer_segment\" text\n);\n\nCREATE TABLE top_brand_by_category(\n  \"category_level_1\" TEXT, \n  \"brand\" TEXT, \n  \"total_sales\" DOUBLE, \n  \"number_of_purchases\" BIGINT, \n  \"rank\" INT, \n  PRIMARY KEY (\"category_level_1\", \"rank\", \"brand\")\n);\n\nCREATE TABLE top_product_by_brand(\n  \"brand\" TEXT PRIMARY KEY, \n  \"product_id\" BIGINT, \n  \"price\" DOUBLE, \n  \"revenue\" DOUBLE, \n  \"number_of_purchases\" BIGINT\n);\n\nCREATE TABLE category_conversion(\n  \"category_level_1\" TEXT PRIMARY KEY, \n  \"total_views\" BIGINT, \n  \"total_purchases\" BIGINT, \n  \"avg_conversion_rate (%)\" DOUBLE\n);\n\nCREATE TABLE shopping_behavior(\n  \"day\" INT PRIMARY KEY, \n  \"view\" BIGINT, \n  \"cart\" BIGINT, \n  \"purchase\" BIGINT\n);"
+kind: ConfigMap
+metadata:
+  annotations:
+    use-subpath: "true"
+  labels:
+    io.kompose.service: cassandra
+  name: cassandra-cm1

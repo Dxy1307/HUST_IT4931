@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: my-pv
+spec:
+  capacity:
+    storage: 1Gi # Dung lượng lưu trữ
+  accessModes:
+    - ReadWriteMany # Chỉ cho phép một pod ghi
+  persistentVolumeReclaimPolicy: Retain # Quy tắc khi pod hủy liên kết PV
+  hostPath:
+    path: D:\BigData\HUST_IT4931\spark\code # Đường dẫn vật lý trên máy chủ
