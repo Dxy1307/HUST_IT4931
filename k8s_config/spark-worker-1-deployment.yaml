@@ -33,7 +33,7 @@ spec:
             - name: SPARK_USER
               value: spark
             - name: SPARK_WORKER_CORES
-              value: "1"
+              value: "2"
             - name: SPARK_WORKER_MEMORY
               value: 5G
           image: bitnami/spark

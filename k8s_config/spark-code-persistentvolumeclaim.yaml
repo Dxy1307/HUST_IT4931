@@ -5,8 +5,9 @@ metadata:
     app: spark-code
   name: spark-code
 spec:
+  storageClassName: local-storage
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi
+      storage: 4Gi

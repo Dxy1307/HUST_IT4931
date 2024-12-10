@@ -39,12 +39,12 @@ spec:
           ports:
             - containerPort: 8080
             - containerPort: 7077
-          volumeMounts:
-            - mountPath: /opt/bitnami/spark/code
-              name: spark-code
+          # volumeMounts:
+          #   - mountPath: /opt/bitnami/spark/code
+          #     name: spark-code-storage
       restartPolicy: Always
-      volumes:
-        - name: spark-code
-          persistentVolumeClaim:
-            claimName: spark-code
+      # volumes:
+      #   - name: spark-code-storage
+      #     persistentVolumeClaim:
+      #       claimName: spark-code
       
