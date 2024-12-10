@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spark-worker-2
+  name: spark-worker-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-worker-2
+  template:
+    metadata:
+      labels:
+        app: spark-worker-2
+    spec:
+      containers:
+        - env:
+            - name: SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED
+              value: "no"
+            - name: SPARK_MASTER_URL
+              value: spark://spark-master:7077
+            - name: SPARK_MODE
+              value: worker
+            - name: SPARK_RPC_AUTHENTICATION_ENABLED
+              value: "no"
+            - name: SPARK_RPC_ENCRYPTION_ENABLED
+              value: "no"
+            - name: SPARK_SSL_ENABLED
+              value: "no"
+            - name: SPARK_SUBMIT_OPTIONS
+              value: --packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0
+            - name: SPARK_USER
+              value: spark
+            - name: SPARK_WORKER_CORES
+              value: "2"
+            - name: SPARK_WORKER_MEMORY
+              value: 5G
+          image: bitnami/spark
+          name: spark-worker-2
+      restartPolicy: Always

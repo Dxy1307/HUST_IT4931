@@ -1,0 +1,3 @@
+pyspark==3.2.3
+cassandra-driver==3.25.0
+pandas

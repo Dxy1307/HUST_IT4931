@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: spark-master
+  name: spark-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-master
+  template:
+    metadata:
+      labels:
+        app: spark-master
+    spec:
+      containers:
+        - name: spark-master
+          image: docker.io/bitnami/spark:3.5
+          env:
+            - name: SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED
+              value: "no"
+            - name: SPARK_MASTER_HOST
+              value: "0.0.0.0"        
+            - name: SPARK_MASTER_PORT
+              value: "7077"
+            - name: SPARK_MODE
+              value: master
+            - name: SPARK_RPC_AUTHENTICATION_ENABLED
+              value: "no"
+            - name: SPARK_RPC_ENCRYPTION_ENABLED
+              value: "no"
+            - name: SPARK_SSL_ENABLED
+              value: "no"
+            - name: SPARK_SUBMIT_OPTIONS
+              value: "--packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0 --conf spark.port.maxRetries=50"
+            - name: SPARK_USER
+              value: spark
+          ports:
+            - containerPort: 8080
+            - containerPort: 7077
+          # volumeMounts:
+          #   - mountPath: /opt/bitnami/spark/code
+          #     name: spark-code-storage
+      restartPolicy: Always
+      # volumes:
+      #   - name: spark-code-storage
+      #     persistentVolumeClaim:
+      #       claimName: spark-code
+      
