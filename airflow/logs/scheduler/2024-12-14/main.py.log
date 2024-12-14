@@ -1,0 +1,67 @@
+[2024-12-14T04:47:40.500+0000] {processor.py:161} INFO - Started process (PID=191) to work on /opt/airflow/dags/main.py
+[2024-12-14T04:47:40.509+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/main.py for tasks to queue
+[2024-12-14T04:47:40.512+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:47:40.511+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/main.py
+[2024-12-14T04:47:40.575+0000] {processor.py:840} INFO - DAG(s) 'spark_etl_pipeline' retrieved from /opt/airflow/dags/main.py
+[2024-12-14T04:47:41.015+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:47:41.014+0000] {override.py:1829} INFO - Created Permission View: can edit on DAG:spark_etl_pipeline
+[2024-12-14T04:47:41.061+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:47:41.060+0000] {override.py:1829} INFO - Created Permission View: can delete on DAG:spark_etl_pipeline
+[2024-12-14T04:47:41.088+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:47:41.087+0000] {override.py:1829} INFO - Created Permission View: can read on DAG:spark_etl_pipeline
+[2024-12-14T04:47:41.089+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:47:41.088+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-12-14T04:47:41.111+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:47:41.110+0000] {dag.py:3118} INFO - Creating ORM DAG for spark_etl_pipeline
+[2024-12-14T04:47:41.112+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:47:41.112+0000] {dag.py:3954} INFO - Setting next_dagrun for spark_etl_pipeline to None, run_after=None
+[2024-12-14T04:47:41.145+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/main.py took 0.661 seconds
+[2024-12-14T04:48:23.156+0000] {processor.py:161} INFO - Started process (PID=196) to work on /opt/airflow/dags/main.py
+[2024-12-14T04:48:23.169+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/main.py for tasks to queue
+[2024-12-14T04:48:23.186+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:48:23.186+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/main.py
+[2024-12-14T04:48:23.390+0000] {processor.py:840} INFO - DAG(s) 'spark_etl_pipeline' retrieved from /opt/airflow/dags/main.py
+[2024-12-14T04:48:23.629+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:48:23.628+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-12-14T04:48:23.703+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:48:23.702+0000] {dag.py:3954} INFO - Setting next_dagrun for spark_etl_pipeline to None, run_after=None
+[2024-12-14T04:48:23.820+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/main.py took 0.744 seconds
+[2024-12-14T04:48:54.207+0000] {processor.py:161} INFO - Started process (PID=207) to work on /opt/airflow/dags/main.py
+[2024-12-14T04:48:54.210+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/main.py for tasks to queue
+[2024-12-14T04:48:54.220+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:48:54.218+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/main.py
+[2024-12-14T04:48:54.299+0000] {processor.py:840} INFO - DAG(s) 'spark_etl_pipeline' retrieved from /opt/airflow/dags/main.py
+[2024-12-14T04:48:54.396+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:48:54.395+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-12-14T04:48:54.804+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:48:54.804+0000] {dag.py:3954} INFO - Setting next_dagrun for spark_etl_pipeline to None, run_after=None
+[2024-12-14T04:48:54.882+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/main.py took 0.705 seconds
+[2024-12-14T04:49:24.941+0000] {processor.py:161} INFO - Started process (PID=223) to work on /opt/airflow/dags/main.py
+[2024-12-14T04:49:24.943+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/main.py for tasks to queue
+[2024-12-14T04:49:24.947+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:49:24.947+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/main.py
+[2024-12-14T04:49:25.101+0000] {processor.py:840} INFO - DAG(s) 'spark_etl_pipeline' retrieved from /opt/airflow/dags/main.py
+[2024-12-14T04:49:25.200+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:49:25.199+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-12-14T04:49:25.234+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:49:25.234+0000] {dag.py:3954} INFO - Setting next_dagrun for spark_etl_pipeline to None, run_after=None
+[2024-12-14T04:49:25.287+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/main.py took 0.356 seconds
+[2024-12-14T04:49:55.710+0000] {processor.py:161} INFO - Started process (PID=234) to work on /opt/airflow/dags/main.py
+[2024-12-14T04:49:55.712+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/main.py for tasks to queue
+[2024-12-14T04:49:55.719+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:49:55.718+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/main.py
+[2024-12-14T04:49:55.748+0000] {processor.py:840} INFO - DAG(s) 'spark_etl_pipeline' retrieved from /opt/airflow/dags/main.py
+[2024-12-14T04:49:56.671+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:49:56.671+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-12-14T04:49:56.886+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:49:56.886+0000] {dag.py:3954} INFO - Setting next_dagrun for spark_etl_pipeline to None, run_after=None
+[2024-12-14T04:49:56.955+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/main.py took 1.261 seconds
+[2024-12-14T04:50:27.246+0000] {processor.py:161} INFO - Started process (PID=245) to work on /opt/airflow/dags/main.py
+[2024-12-14T04:50:27.247+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/main.py for tasks to queue
+[2024-12-14T04:50:27.250+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:50:27.250+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/main.py
+[2024-12-14T04:50:27.287+0000] {processor.py:840} INFO - DAG(s) 'spark_etl_pipeline' retrieved from /opt/airflow/dags/main.py
+[2024-12-14T04:50:27.321+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:50:27.320+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-12-14T04:50:27.335+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:50:27.334+0000] {dag.py:3954} INFO - Setting next_dagrun for spark_etl_pipeline to None, run_after=None
+[2024-12-14T04:50:27.356+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/main.py took 0.119 seconds
+[2024-12-14T04:50:57.482+0000] {processor.py:161} INFO - Started process (PID=256) to work on /opt/airflow/dags/main.py
+[2024-12-14T04:50:57.483+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/main.py for tasks to queue
+[2024-12-14T04:50:57.485+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:50:57.485+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/main.py
+[2024-12-14T04:50:57.509+0000] {processor.py:840} INFO - DAG(s) 'spark_etl_pipeline' retrieved from /opt/airflow/dags/main.py
+[2024-12-14T04:50:57.590+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:50:57.590+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-12-14T04:50:57.603+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:50:57.603+0000] {dag.py:3954} INFO - Setting next_dagrun for spark_etl_pipeline to None, run_after=None
+[2024-12-14T04:50:57.632+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/main.py took 0.158 seconds
+[2024-12-14T04:51:27.817+0000] {processor.py:161} INFO - Started process (PID=267) to work on /opt/airflow/dags/main.py
+[2024-12-14T04:51:27.819+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/main.py for tasks to queue
+[2024-12-14T04:51:27.821+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:51:27.821+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/main.py
+[2024-12-14T04:51:27.853+0000] {processor.py:840} INFO - DAG(s) 'spark_etl_pipeline' retrieved from /opt/airflow/dags/main.py
+[2024-12-14T04:51:27.883+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:51:27.883+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-12-14T04:51:27.898+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:51:27.898+0000] {dag.py:3954} INFO - Setting next_dagrun for spark_etl_pipeline to None, run_after=None
+[2024-12-14T04:51:27.924+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/main.py took 0.113 seconds
+[2024-12-14T04:51:58.117+0000] {processor.py:161} INFO - Started process (PID=278) to work on /opt/airflow/dags/main.py
+[2024-12-14T04:51:58.119+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/main.py for tasks to queue
+[2024-12-14T04:51:58.122+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:51:58.121+0000] {dagbag.py:545} INFO - Filling up the DagBag from /opt/airflow/dags/main.py
+[2024-12-14T04:51:58.154+0000] {processor.py:840} INFO - DAG(s) 'spark_etl_pipeline' retrieved from /opt/airflow/dags/main.py
+[2024-12-14T04:51:58.193+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:51:58.193+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2024-12-14T04:51:58.211+0000] {logging_mixin.py:188} INFO - [2024-12-14T04:51:58.211+0000] {dag.py:3954} INFO - Setting next_dagrun for spark_etl_pipeline to None, run_after=None
+[2024-12-14T04:51:58.234+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/main.py took 0.126 seconds
