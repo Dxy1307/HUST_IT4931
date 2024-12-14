@@ -1,4 +1,0 @@
-spark-submit --master spark://spark-master:7077 --packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0 --py-files transformations.py,user_defined_function.py /opt/spark/work-dir/main.py
-
-
-cqlsh -u cassandra -p cassandra
