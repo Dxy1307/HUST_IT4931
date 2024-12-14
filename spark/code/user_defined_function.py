@@ -1,6 +1,3 @@
-
-
-
 def time__seconds_to_string(seconds):
     seconds = int(seconds)
     days = seconds // 86400
@@ -24,3 +21,18 @@ def classify_rfm(recency, frequency, monetary):
         return "Low-Value Customer"
     else:
         return "Regular Customer"
+    
+
+def categorize_hour(hour):
+    if hour is None or hour < 0 or hour > 24:
+        return "Unknown"
+    if 5 <= hour < 11:
+        return "Early Morning (5 AM - 11 AM)"
+    elif 11 <= hour < 13:
+        return "Noon (11 AM - 1 PM)"
+    elif 13 <= hour < 18:
+        return "Afternoon (1 PM - 6 PM)"
+    elif 18 <= hour < 22:
+        return "Evening (6 PM - 10 PM)"
+    else:
+        return "Night (10 PM - 5 AM)"
