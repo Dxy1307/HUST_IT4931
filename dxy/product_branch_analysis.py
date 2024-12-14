@@ -10,11 +10,7 @@ from pyspark.sql.types import StructType, StringType, IntegerType, DoubleType
 # Khởi tạo Spark session
 spark = SparkSession.builder \
         .appName("ProductBrandActionAnalysis") \
-        .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1") \
-        .config("es.nodes", "http://localhost") \
-        .config("es.port", "9200") \
-        .config("es.net.ssl", "false") \
-        .config("es.index.auto.create", "true") \
+        .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
         .getOrCreate()
 
 spark.sparkContext.setLogLevel("ERROR")
@@ -36,6 +32,10 @@ kafka_stream = spark.readStream.format("kafka") \
     .option("subscribe", "test") \
     .load()
 
+# Giải mã giá trị JSON từ Kafka
+# df = kafka_stream.selectExpr("CAST(value AS STRING)").alias("json_value")
+# df = df.select(from_json(col("json_value"), "event_time STRING, event_type STRING, product_id STRING, category_id STRING, category_code STRING, brand STRING, price FLOAT, user_id STRING, user_session STRING").alias("data"))
+
 parse_df = kafka_stream.select(from_json(col("value").cast("string"), schema).alias("data"))
 
 # Chuyển đổi cột event_time thành kiểu timestamp và tạo watermark
@@ -54,6 +54,8 @@ df_grouped = df_with_time.groupBy(
 
 # Chọn các cột cần hiển thị và đổi tên cho dễ đọc
 df_to_display = df_grouped.select(
+    # col("window.start").alias("window_start"),
+    # col("window.end").alias("window_end"),
     col("product_id"),
     col("brand"),
     col("event_type"),
@@ -62,15 +64,9 @@ df_to_display = df_grouped.select(
 
 # Hiển thị kết quả ra console (hoặc có thể ghi vào nơi khác như HDFS, S3)
 query = df_to_display.writeStream \
-    .outputMode("update") \
-    .format("org.elasticsearch.spark.sql") \
-    .option("es.resource", "product_branch_analysis") \
-    .option("es.nodes", "http://localhost") \
-    .option("es.port", "9200") \
-    .option("es.net.ssl", "false") \
-    .option("es.mapping.id", "product_id") \
-    .option("checkpointLocation", "E:/BachKhoa/20241/BigData/HUST_IT4931/checkpoint/product_branch_analysis") \
-    .trigger(processingTime="1 minutes") \
+    .outputMode("complete") \
+    .format("console") \
+    .option("truncate", "false") \
     .start()
 
 query.awaitTermination()
