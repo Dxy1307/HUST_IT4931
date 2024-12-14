@@ -10,7 +10,11 @@ from pyspark.sql.types import StructType, StringType, IntegerType, DoubleType
 # Khởi tạo Spark session
 spark = SparkSession.builder \
         .appName("UserActionsByTime") \
-        .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3") \
+        .config("spark.jars.packages", "org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.1,org.elasticsearch:elasticsearch-spark-30_2.12:8.6.1") \
+        .config("es.nodes", "http://localhost") \
+        .config("es.port", "9200") \
+        .config("es.net.ssl", "false") \
+        .config("es.index.auto.create", "true") \
         .getOrCreate()
 
 spark.sparkContext.setLogLevel("ERROR")
@@ -32,10 +36,6 @@ kafka_stream = spark.readStream \
                 .option("kafka.bootstrap.servers", "localhost:9092") \
                 .option("subscribe", "test") \
                 .load()
-
-# Giải mã dữ liệu JSON
-# df = kafka_stream.selectExpr("CAST(value AS STRING)").alias("json_value")
-# df = df.select(from_json(col("json_value"), "event_time STRING, event_type STRING, product_id STRING, category_id STRING, category_code STRING, brand STRING, price FLOAT, user_id STRING, user_session STRING").alias("data"))
 
 parse_df = kafka_stream.select(from_json(col("value").cast("string"), schema).alias("data"))
 
@@ -60,16 +60,40 @@ df_grouped = df_with_time.groupBy(
 #     .start()
 
 # Ghi dữ liệu ra console với thông tin chi tiết về thời gian của cửa sổ
-query = df_grouped.select(
+# query = df_grouped.select(
+#     col("window.start").alias("window_start"),
+#     col("window.end").alias("window_end"),
+#     col("event_type"),
+#     col("event_count")
+# ).writeStream \
+#     .outputMode("update") \
+#     .format("console") \
+#     .option("truncate", "false") \
+#     .trigger(processingTime="1 minute") \
+#     .start()
+
+# query.awaitTermination()
+
+df_to_es = df_grouped.withColumn(
+    "unique_id",
+    expr("uuid()")
+).select(
+    "unique_id",
     col("window.start").alias("window_start"),
     col("window.end").alias("window_end"),
     col("event_type"),
     col("event_count")
-).writeStream \
+)
+
+query = df_to_es.writeStream \
     .outputMode("update") \
-    .format("console") \
-    .option("truncate", "false") \
-    .trigger(processingTime="1 minute") \
+    .format("org.elasticsearch.spark.sql") \
+    .option("es.resource", "user_action_by_time_2") \
+    .option("es.nodes", "http://localhost") \
+    .option("es.port", "9200") \
+    .option("es.net.ssl", "false") \
+    .option("es.mapping.id", "unique_id") \
+    .option("checkpointLocation", "E:/BachKhoa/20241/BigData/HUST_IT4931/checkpoint/user_action_by_time") \
     .start()
 
 query.awaitTermination()
