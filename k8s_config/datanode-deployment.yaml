@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: datanode
+  name: datanode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: datanode
+  template:
+    metadata:
+      labels:
+        app: datanode
+    spec:
+      hostname: datanode
+      subdomain: hadoop
+      containers:
+        - env:
+            - name: CORE_CONF_fs_defaultFS
+              valueFrom:
+                configMapKeyRef:
+                  key: CORE_CONF_fs_defaultFS
+                  name: hadoop-env
+            - name: HDFS_CONF_dfs_replication
+              valueFrom:
+                configMapKeyRef:
+                  key: HDFS_CONF_dfs_replication
+                  name: hadoop-env
+            - name: HDFS_CONF_dfs_namenode_http_address
+              value: "namenode:9870"  # Đảm bảo Datanode có thể kết nối với Namenode qua HTTP
+            - name: HDFS_CONF_dfs_namenode_rpc_address
+              value: "namenode:8020"  # RPC Address để kết nối với Namenode
+          image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+          name: datanode
+      restartPolicy: Always
