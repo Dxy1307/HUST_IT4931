@@ -3,12 +3,16 @@ kind: Service
 metadata:
   name: namenode
 spec:
+  clusterIP: 10.106.17.77
   ports:
     - name: "9870"
+      protocol: TCP
       port: 9870
       targetPort: 9870
     - name: "8020"
+      protocol: TCP
       port: 8020
       targetPort: 8020
   selector:
     app: namenode
+  type: NodePort

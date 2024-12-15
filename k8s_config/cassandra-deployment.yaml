@@ -34,16 +34,11 @@ spec:
             - containerPort: 9042
               protocol: TCP
           volumeMounts:
-            - mountPath: /var/lib/cassandra
-              name: cassandra-data
             - mountPath: /docker-entrypoint-initdb.d/init.cql
               name: cassandra-cm1
               subPath: init.cql
       restartPolicy: Always
       volumes:
-        - name: cassandra-data
-          persistentVolumeClaim:
-            claimName: cassandra-data
         - configMap:
             items:
               - key: init.cql

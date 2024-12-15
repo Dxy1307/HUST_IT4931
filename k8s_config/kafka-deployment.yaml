@@ -34,6 +34,8 @@ spec:
               value: "1"
             - name: KAFKA_LISTENER_NAME_PLAINTEXT_PORT
               value: "9092"
+            - name: KAFKA_TOPIC
+              value: "quickstart-events"
             - name: KAFKA_LISTENER_NAME_PLAINTEXT_SECURITY_PROTOCOL
               value: PLAINTEXT
             - name: KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE
