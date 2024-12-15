@@ -61,3 +61,10 @@ CREATE TABLE shopping_behavior(
   "cart" BIGINT, 
   "purchase" BIGINT
 );
+
+CREATE TABLE analyze_peak_access_hours(
+  "hour_category" TEXT PRIMARY KEY,
+  "total_access" BIGINT,
+  "unique_users" BIGINT,
+  "access_percentage" DOUBLE
+);

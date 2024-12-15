@@ -164,5 +164,30 @@ def shopping_behavior(df):
 
     return df_day
 
+# 4. Phân tích theo phiên
+
+# 4.1. Thống kê số lượt, người dùng truy cập theo khung giờ trong ngày
+def analyze_peak_access_hours(df):
+    categorize_hour_udf = udf(UDF.categorize_hour, StringType())
+
+    df_with_categories = df.withColumn("access_hour", hour(col("event_time"))) \
+                        .withColumn("hour_category", categorize_hour_udf(hour(col("event_time"))))
+
+    df_aggregated = df_with_categories.groupBy("hour_category") \
+        .agg(
+            count("*").alias("total_access"),
+            countDistinct("user_id").alias("unique_users")
+        )
+
+    window_spec = Window.partitionBy()
+    df_with_percentage = df_aggregated.withColumn(
+        "access_percentage",
+        round(col("total_access") / sum("total_access").over(window_spec) * 100, 2)
+    )
+
+    return df_with_percentage.orderBy(
+        col("total_access").desc(),
+        col("access_percentage").desc()
+    )
 
 
