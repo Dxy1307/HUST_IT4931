@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: namenode
+  labels:
+    app: namenode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: namenode
+  template:
+    metadata:
+      labels:
+        app: namenode
+    spec:
+      containers:
+        - name: namenode
+          image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+          ports:
+            - containerPort: 9870  # HTTP WebHDFS
+              protocol: TCP
+            - containerPort: 8020  # RPC
+              protocol: TCP
+          env:
+            - name: CLUSTER_NAME
+              value: bigdata_cluster
+            - name: HDFS_USER
+              value: "hdfs"
+            - name: dfs.namenode.datanode.registration.ip-hostname-check
+              value: "false"
+            - name: CORE_CONF_fs_defaultFS
+              valueFrom:
+                configMapKeyRef:
+                  name: hadoop-env
+                  key: CORE_CONF_fs_defaultFS
+            - name: HDFS_CONF_dfs_replication
+              valueFrom:
+                configMapKeyRef:
+                  name: hadoop-env
+                  key: HDFS_CONF_dfs_replication
+            - name: HDFS_CONF_dfs_webhdfs_enabled
+              valueFrom:
+                configMapKeyRef:
+                  name: hadoop-env
+                  key: HDFS_CONF_dfs_webhdfs_enabled
+            - name: HDFS_CONF_dfs_namenode_http_address
+              valueFrom:
+                configMapKeyRef:
+                  name: hadoop-env
+                  key: HDFS_CONF_dfs_namenode_http_address
+            - name: HDFS_CONF_dfs_support_append
+              value: "true"
+      restartPolicy: Always

@@ -1,0 +1,11 @@
+v1
+{"taskId":0,"execTimeMillis":1734023401063,"resource":"top_active_users","records":11}
+{"taskId":1,"execTimeMillis":1734023401054,"resource":"top_active_users","records":10}
+{"taskId":2,"execTimeMillis":1734023401054,"resource":"top_active_users","records":12}
+{"taskId":3,"execTimeMillis":1734023401055,"resource":"top_active_users","records":11}
+{"taskId":4,"execTimeMillis":1734023401054,"resource":"top_active_users","records":10}
+{"taskId":5,"execTimeMillis":1734023401065,"resource":"top_active_users","records":5}
+{"taskId":6,"execTimeMillis":1734023401054,"resource":"top_active_users","records":13}
+{"taskId":7,"execTimeMillis":1734023401057,"resource":"top_active_users","records":10}
+{"taskId":8,"execTimeMillis":1734023402779,"resource":"top_active_users","records":9}
+{"taskId":9,"execTimeMillis":1734023403306,"resource":"top_active_users","records":9}

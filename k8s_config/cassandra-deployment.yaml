@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: cassandra
+  name: cassandra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cassandra
+  template:
+    metadata:
+      labels:
+       app: cassandra
+    spec:
+      containers:
+        - env:
+            - name: CASSANDRA_CLUSTER_NAME
+              value: bigdata_cluster
+            - name: CASSANDRA_DC
+              value: datacenter1
+            - name: CASSANDRA_ENDPOINT_SNITCH
+              value: GossipingPropertyFileSnitch
+            - name: CASSANDRA_INIT_SCRIPT
+              value: /docker-entrypoint-initdb.d/init.cql
+            - name: CASSANDRA_PASSWORD
+              value: cassandra
+            - name: CASSANDRA_USER
+              value: cassandra
+          image: bitnami/cassandra:latest
+          name: cassandra
+          ports:
+            - containerPort: 9042
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /docker-entrypoint-initdb.d/init.cql
+              name: cassandra-cm1
+              subPath: init.cql
+      restartPolicy: Always
+      volumes:
+        - configMap:
+            items:
+              - key: init.cql
+                path: init.cql
+            name: cassandra-cm1
+          name: cassandra-cm1
