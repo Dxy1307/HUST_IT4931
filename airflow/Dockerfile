@@ -21,5 +21,7 @@ USER airflow
 # Install PySpark and other required packages
 RUN pip install --no-cache-dir \
     pyspark==${PYSPARK_VERSION} \
-    apache-airflow-providers-apache-spark
+    apache-airflow-providers-apache-spark \
+    cassandra-driver \
+    elasticsearch
 

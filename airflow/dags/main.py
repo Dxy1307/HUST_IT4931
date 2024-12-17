@@ -14,9 +14,9 @@ default_args = {
 
 # Define the DAG
 with DAG(
-    dag_id='spark_etl_pipeline',
+    dag_id='batch_processing',
     default_args=default_args,
-    schedule_interval=None,  # Trigger manually
+    schedule_interval='@monthly',  # Run the DAG once a month
     catchup=False,
     description='A Spark ETL pipeline DAG',
 ) as dag:
@@ -39,5 +39,22 @@ with DAG(
         verbose=True,
     )
 
+    # Task 3: Sync data from Cassandra to Elasticsearch
+    cassandra_to_es_sync_task = SparkSubmitOperator(
+        task_id='cassandra_to_elasticsearch_sync',
+        application='/opt/airflow/code/cassandra_es_sync.py',
+        conn_id='spark_default',
+        packages='com.datastax.spark:spark-cassandra-connector_2.12:3.2.0,org.elasticsearch:elasticsearch-spark-30_2.12:8.12.0',
+        conf={
+            'spark.cassandra.connection.host': 'cassandra',
+            'spark.cassandra.connection.port': '9042',
+            'spark.es.nodes': 'elasticsearch',
+            'spark.es.port': '9200',
+            'spark.es.nodes.wan.only': 'true'
+        },
+        verbose=True,
+    )
+
+
     # Set task dependencies
-    extract_task >> transform_load_task
+    extract_task >> transform_load_task >> cassandra_to_es_sync_task
