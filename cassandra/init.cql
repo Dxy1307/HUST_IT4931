@@ -2,7 +2,7 @@ DROP KEYSPACE IF EXISTS bigdata;
 
 CREATE KEYSPACE bigdata WITH REPLICATION = {
   'class': 'SimpleStrategy', 
-  'replication_factor': 1
+  'replication_factor': 3
 };
 
 USE bigdata;

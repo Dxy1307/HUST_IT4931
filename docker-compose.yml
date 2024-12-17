@@ -177,7 +177,6 @@ services:
     networks:
       - bigdata_network
 
-
   # Hadoop Namenode
   namenode:
     image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
@@ -209,36 +208,16 @@ services:
       - bigdata_network
 
   # Zookeeper
-  zookeeper:
-    image: bitnami/zookeeper:latest
-    container_name: zookeeper
-    environment:
-      - ZOOKEEPER_CLIENT_PORT=2181
-      - ALLOW_ANONYMOUS_LOGIN=yes
-    ports:
-      - "2181:2181"
-    networks:
-      - bigdata_network
-
-  # Kafka
-  # kafka:
-  #   image: bitnami/kafka:latest
-  #   container_name: kafka
-  #   ports:
-  #     - "9092:9092"
+  # zookeeper:
+  #   image: bitnami/zookeeper:latest
+  #   container_name: zookeeper
   #   environment:
-  #     - KAFKA_CFG_NODE_ID=0
-  #     - KAFKA_CFG_PROCESS_ROLES=controller,broker
-  #     - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-  #     - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-  #     - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
-  #     - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-  #     - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
-  #   depends_on:
-  #     - zookeeper
+  #     - ZOOKEEPER_CLIENT_PORT=2181
+  #     - ALLOW_ANONYMOUS_LOGIN=yes
+  #   ports:
+  #     - "2181:2181"
   #   networks:
   #     - bigdata_network
-
 
   # kafka:
   #   image: bitnami/kafka:latest
@@ -272,12 +251,12 @@ services:
   #     - bigdata_network
 
   # kafka-consumer:
-  #   image: tung103664/kafka-consumer
-  #   container_name: kafka-consumer
-  #   depends_on:
-  #     - kafka-producer
-  #   networks:
-  #     - bigdata_network
+    # image: tung103664/kafka-consumer
+    # container_name: kafka-consumer
+    # depends_on:
+    #   - kafka-producer
+    # networks:
+    #   - bigdata_network
 
   # Spark Master
   spark-master:
@@ -327,28 +306,28 @@ services:
     networks:
       - bigdata_network
 
-  # spark-worker-2:
-  #   image: bitnami/spark:latest
-  #   container_name: spark-worker-2
-  #   environment:
-  #     - SPARK_MODE=worker
-  #     - SPARK_MASTER_URL=spark://spark-master:7077
-  #     - SPARK_WORKER_MEMORY=2G
-  #     - SPARK_WORKER_CORES=2
-  #     - SPARK_RPC_AUTHENTICATION_ENABLED=no
-  #     - SPARK_RPC_ENCRYPTION_ENABLED=no
-  #     - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-  #     - SPARK_SSL_ENABLED=no
-  #     # - SPARK_USER=spark
-  #     - SPARK_CONF_spark_serializer=org.apache.spark.serializer.KryoSerializer
-  #     - SPARK_CONF_spark_kryo_registrationRequired=true
-  #     # - SPARK_SUBMIT_OPTIONS=--packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0
-  #   depends_on:
-  #     - spark-master
-  #   volumes:
-  #     - ./spark/code:/opt/airflow/code
-  #   networks:
-  #     - bigdata_network
+  spark-worker-2:
+    image: bitnami/spark:latest
+    container_name: spark-worker-2
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=2G
+      - SPARK_WORKER_CORES=2
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+      # - SPARK_USER=spark
+      - SPARK_CONF_spark_serializer=org.apache.spark.serializer.KryoSerializer
+      - SPARK_CONF_spark_kryo_registrationRequired=true
+      # - SPARK_SUBMIT_OPTIONS=--packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0
+    depends_on:
+      - spark-master
+    volumes:
+      - ./spark/code:/opt/airflow/code
+    networks:
+      - bigdata_network
 
   # Cassandra
   cassandra:

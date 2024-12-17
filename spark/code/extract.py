@@ -7,8 +7,8 @@ from datetime import datetime
 run_time = "{:%Y%m%d}".format(datetime.now())
 month = "{:%m}".format(datetime.now())
 year = "{:%Y}".format(datetime.now())
+
 raw_data_path = "hdfs://namenode:8020/extracted_data/year=" + year + "/month=" + month + "/raw_data/" + run_time
-# raw_data_path = "hdfs://namenode:8020/test_data"
 
 schema = StructType([
     StructField("event_time", TimestampType(), nullable=False),
@@ -30,7 +30,7 @@ def extract_and_clean(input_path, output_path):
     
     # Đọc dữ liệu
 
-    df_raw = spark.read.format("csv").schema(schema).load(input_path)
+    df_raw = spark.read.format("csv").schema(schema).load(input_path).cache()
     # df_raw = spark.read.format("json").load(input_path)
     print(df_raw.show())
     print("Read Data!")
@@ -43,7 +43,8 @@ def extract_and_clean(input_path, output_path):
         .withColumn("category_level_3", split(col("category_code"), "\\.")[2]) \
         .withColumn("category_level_4", split(col("category_code"), "\\.")[3]) \
         .drop("category_code") \
-        .dropna(subset=["brand", "category_level_1"])
+        .dropna(subset=["brand", "category_level_1"]) \
+        .cache()
 
     # Lưu dữ liệu
     df_cleaned.write.parquet(output_path, mode="overwrite")
@@ -53,6 +54,8 @@ def extract_and_clean(input_path, output_path):
     print(df_cleaned.show())
     print(df_raw.show())
 
+    df_raw.unpersist()
+    df_cleaned.unpersist()
 
     spark.stop()
 

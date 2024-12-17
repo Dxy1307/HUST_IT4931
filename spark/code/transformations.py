@@ -8,7 +8,7 @@ import user_defined_function as UDF
 # Các hàm biến đổi dữ liệu
 # 1. Phân tích dữ liệu mua hàng
 
-# 1.1. Sắp xếp các sản phẩm theo số lượng events, tỷ lệ mua hàng sau khi xem hoặc thêm sản phẩm vào giỏ
+# 1.1. Sắp xếp các sản phẩm theo số lượng events, tỷ lệ mua hàng
 def product_events_and_purchase_conversion(df):
 # Tính toán sự kiện theo sản phẩm
     df_count_event_by_product = df.groupBy("product_id", "event_type").count() \
@@ -145,7 +145,7 @@ def category_conversion(df_not_null):
         ) \
         .orderBy(col("avg_conversion_rate (%)").desc())\
 
-    return df_view_purchase_conversion_per_category.fillna(0)
+    return df_view_purchase_conversion_per_category
 
 
 
