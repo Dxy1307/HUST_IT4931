@@ -240,44 +240,44 @@ services:
   #     - bigdata_network
 
 
-  kafka:
-    image: bitnami/kafka:latest
-    container_name: kafka
-    ports:
-      - "9092:9092"
-      - "9093:9093"
-    environment:
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
-      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
-      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092
-      - KAFKA_LISTENER_NAMES=PLAINTEXT
-      - KAFKA_LISTENER_SECURITY_PROTOCOL=PLAINTEXT
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_BROKER_ID=1
-      - KAFKA_LISTENER_NAME_PLAINTEXT_PORT=9092
-      - KAFKA_TOPIC=quickstart-events
-      - KAFKA_LISTENER_NAME_PLAINTEXT_SECURITY_PROTOCOL=PLAINTEXT
-      - KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE=false
-    depends_on:
-      - zookeeper
-    networks:
-      - bigdata_network
+  # kafka:
+  #   image: bitnami/kafka:latest
+  #   container_name: kafka
+  #   ports:
+  #     - "9092:9092"
+  #     - "9093:9093"
+  #   environment:
+  #     - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+  #     - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT
+  #     - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092
+  #     - KAFKA_LISTENER_NAMES=PLAINTEXT
+  #     - KAFKA_LISTENER_SECURITY_PROTOCOL=PLAINTEXT
+  #     - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+  #     - KAFKA_BROKER_ID=1
+  #     - KAFKA_LISTENER_NAME_PLAINTEXT_PORT=9092
+  #     - KAFKA_TOPIC=quickstart-events
+  #     - KAFKA_LISTENER_NAME_PLAINTEXT_SECURITY_PROTOCOL=PLAINTEXT
+  #     - KAFKA_CONFLUENT_SUPPORT_METRICS_ENABLE=false
+  #   depends_on:
+  #     - zookeeper
+  #   networks:
+  #     - bigdata_network
 
-  kafka-producer:
-    image: tung103664/kafka-producer-v3
-    container_name: kafka-producer
-    depends_on:
-      - kafka
-    networks:
-      - bigdata_network
+  # kafka-producer:
+  #   image: tung103664/kafka-producer-v3
+  #   container_name: kafka-producer
+  #   depends_on:
+  #     - kafka
+  #   networks:
+  #     - bigdata_network
 
-  kafka-consumer:
-    image: tung103664/kafka-consumer
-    container_name: kafka-consumer
-    depends_on:
-      - kafka-producer
-    networks:
-      - bigdata_network
+  # kafka-consumer:
+  #   image: tung103664/kafka-consumer
+  #   container_name: kafka-consumer
+  #   depends_on:
+  #     - kafka-producer
+  #   networks:
+  #     - bigdata_network
 
   # Spark Master
   spark-master:
@@ -327,28 +327,28 @@ services:
     networks:
       - bigdata_network
 
-  spark-worker-2:
-    image: bitnami/spark:latest
-    container_name: spark-worker-2
-    environment:
-      - SPARK_MODE=worker
-      - SPARK_MASTER_URL=spark://spark-master:7077
-      - SPARK_WORKER_MEMORY=2G
-      - SPARK_WORKER_CORES=2
-      - SPARK_RPC_AUTHENTICATION_ENABLED=no
-      - SPARK_RPC_ENCRYPTION_ENABLED=no
-      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
-      - SPARK_SSL_ENABLED=no
-      # - SPARK_USER=spark
-      - SPARK_CONF_spark_serializer=org.apache.spark.serializer.KryoSerializer
-      - SPARK_CONF_spark_kryo_registrationRequired=true
-      # - SPARK_SUBMIT_OPTIONS=--packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0
-    depends_on:
-      - spark-master
-    volumes:
-      - ./spark/code:/opt/airflow/code
-    networks:
-      - bigdata_network
+  # spark-worker-2:
+  #   image: bitnami/spark:latest
+  #   container_name: spark-worker-2
+  #   environment:
+  #     - SPARK_MODE=worker
+  #     - SPARK_MASTER_URL=spark://spark-master:7077
+  #     - SPARK_WORKER_MEMORY=2G
+  #     - SPARK_WORKER_CORES=2
+  #     - SPARK_RPC_AUTHENTICATION_ENABLED=no
+  #     - SPARK_RPC_ENCRYPTION_ENABLED=no
+  #     - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+  #     - SPARK_SSL_ENABLED=no
+  #     # - SPARK_USER=spark
+  #     - SPARK_CONF_spark_serializer=org.apache.spark.serializer.KryoSerializer
+  #     - SPARK_CONF_spark_kryo_registrationRequired=true
+  #     # - SPARK_SUBMIT_OPTIONS=--packages com.datastax.spark:spark-cassandra-connector_2.12:3.2.0
+  #   depends_on:
+  #     - spark-master
+  #   volumes:
+  #     - ./spark/code:/opt/airflow/code
+  #   networks:
+  #     - bigdata_network
 
   # Cassandra
   cassandra:
@@ -369,11 +369,45 @@ services:
     networks:
       - bigdata_network
 
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - bigdata_network
+
+  # Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.0
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - bigdata_network
+
 volumes:
   hadoop_namenode:
   hadoop_datanode:
   cassandra_data:
   postgres-db-volume:
+  elasticsearch_data:
   
 networks:
   bigdata_network:

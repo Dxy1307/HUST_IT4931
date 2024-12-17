@@ -5,7 +5,22 @@ from pyspark.sql.functions import *
 from datetime import datetime
 
 run_time = "{:%Y%m%d}".format(datetime.now())
-raw_data_path = "hdfs://namenode:8020/extracted_data/raw_data/" + run_time
+month = "{:%m}".format(datetime.now())
+year = "{:%Y}".format(datetime.now())
+raw_data_path = "hdfs://namenode:8020/extracted_data/year=" + year + "/month=" + month + "/raw_data/" + run_time
+# raw_data_path = "hdfs://namenode:8020/test_data"
+
+schema = StructType([
+    StructField("event_time", TimestampType(), nullable=False),
+    StructField("event_type", StringType(), nullable=False),
+    StructField("product_id", LongType(), nullable=False),
+    StructField("category_id", LongType(), nullable=False),
+    StructField("category_code", StringType(), nullable=True),
+    StructField("brand", StringType(), nullable=True),
+    StructField("price", DoubleType(), nullable=False),
+    StructField("user_id", LongType(), nullable=False),
+    StructField("user_session", StringType(), nullable=False),
+])
 
 def extract_and_clean(input_path, output_path):
     """
@@ -14,7 +29,9 @@ def extract_and_clean(input_path, output_path):
     spark = SparkSession.builder.appName("Extract and Clean Data").getOrCreate()
     
     # Đọc dữ liệu
-    df_raw = spark.read.format("json").load(input_path)
+
+    df_raw = spark.read.format("csv").schema(schema).load(input_path)
+    # df_raw = spark.read.format("json").load(input_path)
     print(df_raw.show())
     print("Read Data!")
 
@@ -40,6 +57,7 @@ def extract_and_clean(input_path, output_path):
     spark.stop()
 
 if __name__ == "__main__":
-    input_path = "hdfs://namenode:8020/datasets/kafka_data/" + run_time
-    output_path = "hdfs://namenode:8020/extracted_data/" + run_time
+    # input_path = "hdfs://namenode:8020/datasets/kafka_data/" + run_time
+    input_path = "hdfs://namenode:8020/test_data"
+    output_path = "hdfs://namenode:8020/extracted_data/year=" + year + "/month=" + month + "/cleaned_data/" + run_time
     extract_and_clean(input_path, output_path)

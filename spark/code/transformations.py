@@ -24,7 +24,7 @@ def product_events_and_purchase_conversion(df):
                                                                      round((col("purchase") / (col("view") + col("cart"))) * 100, 2))
     # Sắp xếp theo tổng số sự kiện
     df_count_event_by_product = df_count_event_by_product.sort("total_events", ascending=False)
-    return df_count_event_by_product
+    return df_count_event_by_product.fillna(0)
 
 
 
@@ -145,7 +145,7 @@ def category_conversion(df_not_null):
         ) \
         .orderBy(col("avg_conversion_rate (%)").desc())\
 
-    return df_view_purchase_conversion_per_category
+    return df_view_purchase_conversion_per_category.fillna(0)
 
 
 

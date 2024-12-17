@@ -7,8 +7,10 @@ from datetime import datetime
 import transformations as tf
 
 
-run_time = "{:%d%m%Y}".format(datetime.now())
-raw_data_path = "hdfs://namenode:8020/output/extract_data/raw_data/" + run_time
+run_time = "{:%Y%m%d}".format(datetime.now())
+month = "{:%m}".format(datetime.now())
+year = "{:%Y}".format(datetime.now())
+raw_data_path = "hdfs://namenode:8020/extracted_data/year=" + year + "/month=" + month + "/raw_data/" + run_time
 
 schema = StructType([
     StructField("event_time", TimestampType(), nullable=False),
@@ -54,6 +56,7 @@ def transform_and_load(input_path, keyspace):
     df_2_2 = tf.top_product_by_brand(df_cleaned)
     df_3_1 = tf.category_conversion(df_cleaned)
     df_3_2 = tf.shopping_behavior(df_cleaned)
+    df_4_1 = tf.analyze_peak_access_hours(df_raw)
 
     # Load
     def load_to_cassandra(df, table):
@@ -77,10 +80,11 @@ def transform_and_load(input_path, keyspace):
     load_to_cassandra(df_2_2, "top_product_by_brand")
     load_to_cassandra(df_3_1, "category_conversion")
     load_to_cassandra(df_3_2, "shopping_behavior")
+    load_to_cassandra(df_4_1, "analyze_peak_access_hours")
 
     spark.stop()
 
 if __name__ == "__main__":
-    input_path = "hdfs://namenode:8020/output/extract_data/" + run_time
+    input_path = "hdfs://namenode:8020/extracted_data/year=" + year + "/month=" + month + "/cleaned_data/" + run_time
     keyspace = "bigdata"
     transform_and_load(input_path, keyspace)
