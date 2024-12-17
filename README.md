@@ -14,7 +14,7 @@
 | 4   | [Vũ Thị Thanh Hoa](https://www.facebook.com/profile.php?id=100062067740273)      | 20210356     | hoa.vtt210356@sis.hust.edu.vn
 | 5   | [Ngân Văn Thiện](https://www.facebook.com/thien.nganvan.16)        | 20215647     | thien.nv215647@sis.hust.edu.vn
 
-## About dataset
+## 1. About dataset
 
 ### About
 This file contaisn behavior data for 7 months (from October 2019 to April 2020) from a large multi-category online store.
@@ -64,10 +64,114 @@ Thanks to [Michael Kechinov](https://www.kaggle.com/datasets/mkechinov/ecommerce
 
 Thanks to [REES46 Marketing Platform](https://rees46.com/) for this dataset.
 
-## Project
+## 2. Project
 
-### Simulate incoming data in real time
+### Overview Architecture
 
-![data_realtime_simulation](img/data_realtime_simulation.png)
+This project is built using a distributed architecture that integrates various technologies for efficient data processing, orchestration, storage, and monitoring.
+
+![overview_architecture](img/architecture.png)
+
+- Docker: Docker is used to containerize the application components, ensuring consistency across different environments (development, staging, production).
+- Airflow: Schedules and monitors workflows, such as ETL processes, batch jobs, and data pipeline executions.
+- Kafka: Kafka is a distributed streaming platform used for real-time data processing and messaging.
+- Spark: Spark is a unified analytics engine for big data processing, providing both batch and stream processing capabilities.
+- HDFS: HDFS is used for storing large volumes of data in a distributed manner across a cluster.
+- Elasticsearch: Indexes and stores logs and other search-related data, enabling fast and scalable search and analytics operations.
+- Kibana: Kibana is a data visualization tool that integrates with Elasticsearch.
+- Cassandra: Apache Cassandra is a distributed NoSQL database designed for high availability and scalability.
+- Kubernetes: Kubernetes is used for container orchestration and management, ensuring scalability and fault tolerance.
+
+### Architecture Flow
+
+- Data Ingestion: Kafka handles real-time data ingestion from various sources. Data streams are processed and stored in HDFS for batch processing.
+
+![Kafka](img/kafka_realtime.png)
+
+- Data Processing: Spark processes large datasets stored in HDFS, performing complex analytics, transformations, and machine learning tasks.
+
+![Spark](img/spark_processing.png)
+
+- Data Storage: Processed data is stored in Cassandra for fast, low-latency access and Elasticsearch for search and analytics.
+- Orchestration: Airflow manages the execution of workflows, such as data pipelines, and ensures the proper sequence of operations.
+- Containerization & Orchestration: Docker containers host each service and component, with Kubernetes managing their deployment and scaling across the infrastructure.
+- Monitoring & Visualization: Kibana visualizes the logs and metrics stored in Elasticsearch, providing insights into system performance and potential issues.
+
+### How to Run the Project
+
+1. Run the Project Locally (with Docker Compose)
+
+- Clone the repository:
+    ```bash
+    git clone https://github.com/Dxy1307/HUST_IT4931.git
+    cd HUST_IT4931
+    ```
+
+- Build and Start Docker Containers:
+    ```bash
+    docker-compose up --build
+    ```
+    This command will build and start the Docker containers for the project components.
+
+    Docker Compose will start all these services and you can check their status with the following command:
+    ```bash
+    docker-compose ps
+    ```
+
+- Access the Services:
+    - Kafka: http://localhost:9092
+
+    - Spark: http://localhost:7077
+
+    - Cassandra: http://localhost:9042
+
+    - Elasticsearch: http://localhost:9200
+
+    - Kibana: http://localhost:5601
+
+- Run Airflow DAGs (Data Pipeline Workflows):
+    - Airflow is used to manage workflows and DAGs (Directed Acyclic Graphs). Once Airflow is started, you can go to the Airflow interface to check the DAGs and run them.
+
+    - To see the installed DAGs, go to the Airflow interface: http://localhost:8080.
+
+    - Run DAGs to perform tasks such as collecting data from Kafka, processing it with Spark, and storing it to Cassandra.
+
+- Monitor Logs & Metrics:
+
+    - Kibana: Truy cập vào Kibana để theo dõi logs và tạo dashboard để kiểm tra hiệu suất của các dịch vụ.
+
+    - Elasticsearch: Dữ liệu được lưu trữ trong Elasticsearch và có thể được truy vấn hoặc tìm kiếm từ Kibana.
+
+2. Run the Project on a Kubernetes Cluster
+
+### Results
+
+- Data real-time ingestion from Kafka to Spark
+
+![data](img/data_realtime_simulation.png)
+
+- Spark streaming processing
+
+![spark](img/spark_stream.png)
+
+- Spark batch processing
+
+![spark](img/kibana.png)
+
+- Data storage in Cassandra
+
+![cassandra](img/cassandra.png)
+
+- Data storage in Elasticsearch
+
+![elasticsearch](img/elasticsearch.png)
+
+- User cluster by BisectingKMeans model
+
+![user_cluster](img/user_cluster.png)
+
+- User recommendation by ALS model
+
+![user_recommendation](img/user_recommendation.png)
 
 # Dxy
